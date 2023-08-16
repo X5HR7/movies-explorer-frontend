@@ -1,0 +1,17 @@
+.error-page__go-back-link {
+  margin: 0;
+  padding: 0;
+  display: block;
+  color: #4285F4;
+  text-decoration: none;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+@media screen and (max-width: 380px) {
+  .error-page__go-back-link {
+    font-size: 12px;
+  }
+}

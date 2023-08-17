@@ -15,6 +15,8 @@ const ProfileInfo = ({ user, isEditing }) => {
           defaultValue={user.name}
           required={true}
           placeholder='Введите имя'
+          minLength={2}
+          maxLength={30}
         />
       </div>
       <div className='profile__info-item'>

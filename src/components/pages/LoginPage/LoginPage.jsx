@@ -15,7 +15,15 @@ const LoginPage = () => {
           <h1 className='login__title'>Рады видеть!</h1>
           <Form>
             <InputGroup titleText='E-mail' inputType='email' inputId='input-email' />
-            <InputGroup titleText='Пароль' inputType='password' inputId='input-password' />
+            <InputGroup
+              titleText='Пароль'
+              inputType='password'
+              inputId='input-password'
+              validators={{
+                minLength: 6,
+                maxLength: 12
+              }}
+            />
             <SubmitButton classes='login__submit-button' text='Войти' />
           </Form>
         </section>

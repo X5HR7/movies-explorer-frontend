@@ -14,9 +14,25 @@ const RegisterPage = () => {
         <section className='register__form-section'>
           <h1 className='register__title'>Добро пожаловать!</h1>
           <Form>
-            <InputGroup titleText='Имя' inputType='text' inputId='input-name' />
+            <InputGroup
+              titleText='Имя'
+              inputType='text'
+              inputId='input-name'
+              validators={{
+                minLength: 2,
+                maxLength: 30
+              }}
+            />
             <InputGroup titleText='E-mail' inputType='email' inputId='input-email' />
-            <InputGroup titleText='Пароль' inputType='password' inputId='input-password' />
+            <InputGroup
+              titleText='Пароль'
+              inputType='password'
+              inputId='input-password'
+              validators={{
+                minLength: 6,
+                maxLength: 12
+              }}
+            />
             <SubmitButton classes='register__submit-button' text='Зарегистрироваться' />
           </Form>
         </section>

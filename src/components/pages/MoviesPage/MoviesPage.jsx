@@ -10,10 +10,12 @@ const MoviesPage = () => {
   return (
     <div className='movies-page'>
       <Header>
-        <Navigation isLoggedIn={true}/>
+        <Navigation isLoggedIn={true} />
       </Header>
-      <SearchForm />
-      <MoviesCardList isOnSavedPage={false} />
+      <main className='main'>
+        <SearchForm />
+        <MoviesCardList isOnSavedPage={false} />
+      </main>
       <Footer />
     </div>
   );

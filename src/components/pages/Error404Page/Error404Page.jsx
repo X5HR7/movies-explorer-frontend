@@ -4,10 +4,12 @@ import TextContent from './TextContent/TextContent';
 import GoBackLink from './GoBackLink/GoBackLink';
 
 const Error404Page = () => (
-  <div className='error-page'>
-    <TextContent />
-    <GoBackLink />
-  </div>
+  <main className='main'>
+    <section className='error-page'>
+      <TextContent />
+      <GoBackLink />
+    </section>
+  </main>
 );
 
 export default Error404Page;

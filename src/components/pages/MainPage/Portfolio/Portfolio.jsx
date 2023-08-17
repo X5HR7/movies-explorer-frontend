@@ -16,8 +16,10 @@ const Portfolio = () => {
         {projectList.map(item => {
           return (
             <li key={item.name} className='portfolio__project-list-item'>
-              <a href={item.link} target='_blank' rel='noreferrer' className='link portfolio__project-list-item-link'>{item.name}</a>
-              <img src={linkImage} alt='Иконка ссылки' className='portfolio__link-icon' />
+              <a href={item.link} target='_blank' rel='noreferrer' className='link portfolio__project-list-item-link'>
+                <span className='portfolio__project-link-text'>{item.name}</span>
+                <img src={linkImage} alt='Иконка ссылки' className='portfolio__link-icon' />
+              </a>
             </li>
           )
         })}

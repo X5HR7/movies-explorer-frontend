@@ -48,17 +48,17 @@
   line-height: normal;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 1150px) {
   .register {
     margin-top: 214px;
   }
 
   .register__header {
-    margin: 0 0 0 -29px;
+    margin: 0 0 0 -20px;
   }
 }
 
-@media screen and (max-width: 430px) {
+@media screen and (max-width: 560px) {
   .register {
     margin-top: 40px;
     margin-bottom: 0;

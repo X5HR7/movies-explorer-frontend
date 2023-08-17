@@ -10,6 +10,13 @@
   display: grid;
   grid-template-columns: repeat(3, max-content);
   gap: 32px 28px;
+  list-style-type: none;
+}
+
+.cards__container-item {
+  margin: 0;
+  padding: 0;
+  display: block;
 }
 
 .cards__show-more-btn {
@@ -55,6 +62,6 @@
   }
 
   .cards__show-more-btn {
-    margin-top: 80px;
+    margin-top: 75px;
   }
 }

@@ -71,6 +71,12 @@
 
 @media screen and (max-width: 750px) {
   .search-form {
+    max-width: calc(100% - 30px);
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .search-form {
     max-width: 292px;
     padding-bottom: 64px;
   }

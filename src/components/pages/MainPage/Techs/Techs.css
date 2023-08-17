@@ -71,12 +71,14 @@
   .techs__amount {
     margin-top: 80px;
     margin-bottom: 22px;
+    letter-spacing: -1.2px;
   }
 
   .techs__text {
     margin-bottom: 83px;
     font-size: 12px;
     line-height: 18px;
+    letter-spacing: -.44px;
   }
 
   .techs__list-item {
@@ -86,7 +88,7 @@
   }
 }
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 650px) {
   .techs {
     padding-top: 70px;
     padding-bottom: 70px;
@@ -97,7 +99,7 @@
   }
 
   .techs__amount {
-    margin-top: 55px;
+    margin-top: 60px;
     margin-bottom: 24px;
     font-size: 30px;
     line-height: normal;

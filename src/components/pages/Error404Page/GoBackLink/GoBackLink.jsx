@@ -6,7 +6,7 @@ const GoBackLink = () => {
   //useNav
 
   return (
-    <Link to='/movies' className='link error-page__go-back-link'>Назад</Link>
+    <Link to='/' className='link error-page__go-back-link'>Назад</Link>
   );
 };
 

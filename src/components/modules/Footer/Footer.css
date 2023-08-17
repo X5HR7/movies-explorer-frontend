@@ -42,6 +42,13 @@
   flex-direction: row;
   align-items: center;
   grid-area: links;
+  list-style-type: none;
+}
+
+.footer__link-item {
+  margin: 0;
+  padding: 0;
+  display: block;
 }
 
 .footer__link {
@@ -55,7 +62,7 @@
   line-height: normal;
 }
 
-.footer__link:first-of-type {
+.footer__link-item:first-of-type {
   margin-right: 20px;
 }
 
@@ -90,9 +97,9 @@
     font-size: 12px;
   }
 
-  .footer__link:first-of-type {
+  .footer__link-item:first-of-type {
     margin-right: 0;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
   }
 
   .footer__copyright {

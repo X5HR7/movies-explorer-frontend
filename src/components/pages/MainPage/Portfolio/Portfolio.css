@@ -77,18 +77,10 @@
   }
 }
 
-@media screen and (max-width: 750px) {
-  .portfolio {
-    max-width: 292px;
-  }
-
+@media screen and (max-width: 600px) {
   .portfolio__title {
     margin-bottom: 40px;
     font-size: 14px;
-  }
-
-  .portfolio__project-list {
-    margin-bottom: 70px;
   }
 
   .portfolio__project-list-item-link {
@@ -100,5 +92,17 @@
     margin-right: 0;
     width: 10px;
     height: 10px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .portfolio {
+    max-width: 292px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .portfolio__project-list {
+    margin-bottom: 70px;
   }
 }

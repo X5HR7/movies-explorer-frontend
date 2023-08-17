@@ -244,8 +244,8 @@
 @media screen and (max-width: 525px) {
   .navigation__item-list {
     width: 320px;
-    height: calc(100vh - 142px);
-    padding-top: 142px;
+    height: calc(100vh - 150px);
+    padding-top: 150px;
   }
 
   .navigation__checkbox,
@@ -271,13 +271,13 @@
 
   .navigation__hamburger {
     width: 22px;
-    top: 24px;
+    top: 35px;
     right: 18px;
   }
 
   .navigation__checkbox {
-    top: 12px;
-    right: 16px;
+    top: 22px;
+    right: 17px;
   }
 
   .navigation__checkbox:checked ~ .navigation__item-list {

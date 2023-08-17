@@ -4,6 +4,7 @@ import Header from '../../modules/Header/Header';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
 import Navigation from '../../modules/Navigation/Navigation';
 import SubmitButton from '../../ui/form/SubmitButton/SubmitButton';
+import { Link } from 'react-router-dom';
 
 const ProfilePage = ({ user = { name: 'Виталий', email: 'pochta@yandex.ru' } }) => {
   const [isEditing, setIsEditing] = React.useState(false);
@@ -43,7 +44,7 @@ const ProfilePage = ({ user = { name: 'Виталий', email: 'pochta@yandex.ru
               >
                 Редактировать
               </button>
-              <button type='button' className='link profile__logout-button'>Выйти из аккаунта</button>
+              <Link to='/' className='link profile__logout-button'>Выйти из аккаунта</Link>
             </>
         }
       </div>

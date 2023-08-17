@@ -277,4 +277,14 @@
     font-weight: 500;
     line-height: 16px;
   }
+
+  .navigation__signup-link {
+    font-size: 10px;
+    margin-right: 14px;
+  }
+
+  .navigation__signin-link {
+    padding: 5px 12px;
+    font-size: 10px;
+  }
 }

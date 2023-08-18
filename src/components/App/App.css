@@ -1,0 +1,29 @@
+.App {
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+
+.link {
+  opacity: 1;
+  transition: opacity .3s;
+}
+
+.link:hover {
+  cursor: pointer;
+  opacity: .7;
+  transition: opacity .3s;
+}
+
+
+.button {
+  opacity: 1;
+  transition: opacity .3s;
+}
+
+.button:hover {
+  cursor: pointer;
+  opacity: .8;
+  transition: opacity .3s;
+}

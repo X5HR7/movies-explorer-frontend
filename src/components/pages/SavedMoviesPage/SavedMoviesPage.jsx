@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import './SavedMoviesPage.css';
 import Header from '../../modules/Header/Header';
 import SearchForm from '../../modules/SearchForm/SearchForm';
 import MoviesCardList from '../../modules/MoviesCardList/MoviesCardList';
 import Footer from '../../modules/Footer/Footer';
 import Navigation from '../../modules/Navigation/Navigation';
+import { useFetch } from '../../../hooks/useFetch';
+import MainApi from '../../../utils/MainApi';
+import Preloader from '../../ui/Preloader/Preloader';
 
 const SavedMoviesPage = () => {
+  const { isLoading, data: movies, error } = useFetch(
+    useCallback(() => MainApi.getMovies(), [])
+  );
+
   return (
     <div className='saved-movies-page'>
       <Header>
@@ -14,7 +21,11 @@ const SavedMoviesPage = () => {
       </Header>
       <main className='main'>
         <SearchForm />
-        <MoviesCardList isOnSavedPage={true} />
+        {isLoading ?
+          <Preloader />
+          :
+          <MoviesCardList movies={movies} isOnSavedPage={true} />
+        }
       </main>
       <Footer />
     </div>

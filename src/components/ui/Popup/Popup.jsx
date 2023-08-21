@@ -4,14 +4,14 @@ import doneIcon from '../../../assets/images/icon_done.svg';
 import failIcon from '../../../assets/images/icon_failed.svg';
 import PopupContext from '../../../context/PopupContext';
 
-const Popup = ({ successText = 'Операция выполнена успешно' }) => {
-  const { isPopupOpen, setIsPopupOpen, isPopupFailed } = useContext(PopupContext);
+const Popup = () => {
+  const { isPopupOpen, setIsPopupOpen, isPopupFailed, popupMessage } = useContext(PopupContext);
 
   const handleCloseOnEscape = useCallback(event => {
     if (event?.key?.toLowerCase() === 'escape') {
       setIsPopupOpen(false);
     }
-  }, [setIsPopupOpen])
+  }, [setIsPopupOpen]);
 
   useEffect(() => {
     if (isPopupOpen)
@@ -43,7 +43,8 @@ const Popup = ({ successText = 'Операция выполнена успешн
           className='popup__image'
         />
         <p className='popup__text-message'>
-          {isPopupFailed ? 'Что-то пошло не так! Попробуйте ещё раз.' : successText}
+          {popupMessage ? popupMessage : isPopupFailed ? 'Что-то пошло не так! Попробуйте ещё раз.' : 'Операция выполнена успешно'}
+          {/*{popupMessage}*/}
         </p>
       </div>
     </div>

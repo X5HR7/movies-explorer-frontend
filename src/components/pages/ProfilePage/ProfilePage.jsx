@@ -1,16 +1,28 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import './ProfilePage.css';
 import Header from '../../modules/Header/Header';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
 import Navigation from '../../modules/Navigation/Navigation';
 import SubmitButton from '../../ui/form/SubmitButton/SubmitButton';
 import { Link } from 'react-router-dom';
+import CurrentUserContext from '../../../context/CurrentUserContext';
+import { logout } from '../../../services/auth.service';
+import PopupContext from '../../../context/PopupContext';
+import AuthContext from '../../../context/AuthContext';
 
-const ProfilePage = ({ user = { name: 'Виталий', email: 'pochta@yandex.ru' } }) => {
-  const [isEditing, setIsEditing] = React.useState(false);
+const ProfilePage = () => {
+  const [isEditing, setIsEditing] = useState(false);
+  const { user } = useContext(CurrentUserContext);
+  const { setIsAuth } = useContext(AuthContext);
+  const Popup = useContext(PopupContext);
 
   const handleEditButtonClick = () => {
     setIsEditing(prevState => !prevState);
+  };
+
+  const handleLogoutButtonClick = () => {
+    logout(Popup);
+    setIsAuth(false);
   };
 
   return (
@@ -20,8 +32,8 @@ const ProfilePage = ({ user = { name: 'Виталий', email: 'pochta@yandex.ru
       </Header>
       <main className='main'>
         <section className='profile__info-section'>
-          <h1 className='profile__title'>Привет, {user.name}!</h1>
-          <ProfileInfo isEditing={isEditing} user={user} />
+          <h1 className='profile__title'>Привет, {user?.name}!</h1>
+          <ProfileInfo isEditing={isEditing} />
         </section>
 
         <section className='profile__buttons'>
@@ -46,7 +58,13 @@ const ProfilePage = ({ user = { name: 'Виталий', email: 'pochta@yandex.ru
                 >
                   Редактировать
                 </button>
-                <Link to='/' className='link profile__logout-button'>Выйти из аккаунта</Link>
+                <Link
+                  to='/'
+                  className='link profile__logout-button'
+                  onClick={handleLogoutButtonClick}
+                >
+                  Выйти из аккаунта
+                </Link>
               </>
           }
         </section>

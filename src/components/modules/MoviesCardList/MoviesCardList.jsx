@@ -9,9 +9,8 @@ const MoviesCardList = ({ isOnSavedPage }) => {
       <ul className='cards__container'>
         {initialCards.map((card, index) => {
           return (
-            <li className='cards__container-item'>
+            <li className='cards__container-item' key={index}>
               <MovieCard
-                key={index}
                 name={card.name}
                 duration={card.duration}
                 image={card.image}

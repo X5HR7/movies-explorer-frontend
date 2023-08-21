@@ -8,6 +8,7 @@ import LoginPage from '../../pages/LoginPage/LoginPage';
 import RegisterPage from '../../pages/RegisterPage/RegisterPage';
 import Error404Page from '../../pages/Error404Page/Error404Page';
 import ProtectedRoute from './ProtectedRoute';
+import PublicRoute from './PublicRoute';
 
 const Router = () => {
   return (
@@ -16,8 +17,8 @@ const Router = () => {
       <Route path='/movies' element={<ProtectedRoute element={MoviesPage} />} />
       <Route path='/saved-movies' element={<ProtectedRoute element={SavedMoviesPage} />} />
       <Route path='/profile' element={<ProtectedRoute element={ProfilePage} />} />
-      <Route path='/signin' element={<LoginPage />} />
-      <Route path='/signup' element={<RegisterPage />} />
+      <Route path='/signin' element={<PublicRoute element={LoginPage}/>} />
+      <Route path='/signup' element={<PublicRoute element={RegisterPage}/>} />
       <Route path='*' element={<Error404Page />} />
     </Routes>
   );

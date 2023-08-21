@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './ProfileInfo.css';
+import CurrentUserContext from '../../../../context/CurrentUserContext';
 
-const ProfileInfo = ({ user, isEditing }) => {
+const ProfileInfo = ({ isEditing }) => {
+  const { user } = useContext(CurrentUserContext);
+
   return (
     <form className='profile__info' id='profile-form'>
       <div className='profile__info-item'>
@@ -12,7 +15,7 @@ const ProfileInfo = ({ user, isEditing }) => {
           type='text'
           disabled={!isEditing}
           // value={user.name}
-          defaultValue={user.name}
+          defaultValue={user?.name}
           required={true}
           placeholder='Введите имя'
           minLength={2}
@@ -27,7 +30,7 @@ const ProfileInfo = ({ user, isEditing }) => {
           type='email'
           disabled={!isEditing}
           // value={user.email}
-          defaultValue={user.email}
+          defaultValue={user?.email}
           required={true}
           placeholder='Введите почту'
         />

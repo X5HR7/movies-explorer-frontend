@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import AuthContext from '../context/AuthContext';
 
 const AuthProvider = ({ children }) => {
   const [isAuth, setIsAuth] = useState(true);
 
-  // const value = useMemo(() => ({ isAuth, setIsAuth }), [isAuth]);
+  const value = useMemo(() => ({
+    isAuth,
+    setIsAuth
+  }), [isAuth]);
 
   return (
-    <AuthContext.Provider value={{ isAuth, setIsAuth }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );

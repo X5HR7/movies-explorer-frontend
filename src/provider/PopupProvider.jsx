@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import PopupContext from '../context/PopupContext';
 
 const PopupProvider = ({ children }) => {
@@ -6,15 +6,17 @@ const PopupProvider = ({ children }) => {
   const [isPopupFailed, setIsPopupFailed] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
 
+  const value = useMemo(() => ({
+    isPopupOpen,
+    setIsPopupOpen,
+    isPopupFailed,
+    setIsPopupFailed,
+    popupMessage,
+    setPopupMessage
+  }), [isPopupOpen, isPopupFailed, popupMessage]);
+
   return (
-    <PopupContext.Provider value={{
-      isPopupOpen,
-      setIsPopupOpen,
-      isPopupFailed,
-      setIsPopupFailed,
-      popupMessage,
-      setPopupMessage
-    }}>
+    <PopupContext.Provider value={value}>
       {children}
     </PopupContext.Provider>
   );

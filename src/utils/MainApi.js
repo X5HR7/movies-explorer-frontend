@@ -22,11 +22,11 @@ class MainApi {
     return this._request('signup', {
       method: 'POST',
       headers: this._headers,
-      body: {
-        email,
-        password,
-        name
-      }
+      body: JSON.stringify({
+        email: email,
+        password: password,
+        name: name
+      })
     });
   }
 
@@ -73,7 +73,7 @@ class MainApi {
 
   _getResponseData(res) {
     if (!res.ok) {
-      return Promise.reject(res);
+      return Promise.reject(res.text());
     }
     return res.json();
   }

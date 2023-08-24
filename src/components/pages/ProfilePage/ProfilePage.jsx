@@ -1,20 +1,24 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import './ProfilePage.css';
 import Header from '../../modules/Header/Header';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
 import Navigation from '../../modules/Navigation/Navigation';
 import SubmitButton from '../../ui/form/SubmitButton/SubmitButton';
 import { Link } from 'react-router-dom';
-import CurrentUserContext from '../../../context/CurrentUserContext';
 import { logout } from '../../../services/auth.service';
-import PopupContext from '../../../context/PopupContext';
-import AuthContext from '../../../context/AuthContext';
+import useFormWithValidation from '../../../hooks/useFormWithValidation';
+import MainApi from '../../../utils/MainApi';
+import useUser from '../../../hooks/useUser';
+import useAuth from '../../../hooks/useAuth';
+import usePopup from '../../../hooks/usePopup';
 
 const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const { user } = useContext(CurrentUserContext);
-  const { setIsAuth } = useContext(AuthContext);
-  const Popup = useContext(PopupContext);
+  const { user, setUser } = useUser();
+  const { setIsAuth } = useAuth();
+  const Popup = usePopup();
+
+  const { values, isValid, errors, handleChange, resetForm } = useFormWithValidation();
 
   const handleEditButtonClick = () => {
     setIsEditing(prevState => !prevState);
@@ -25,6 +29,21 @@ const ProfilePage = () => {
     setIsAuth(false);
   };
 
+  const handleFormSubmit = event => {
+    event.preventDefault();
+    console.log('submitted');
+
+    MainApi.updateUser(values['email'], values['name'])
+      .then(user => {
+        resetForm();
+        setUser({ name: user.name, email: user.email });
+        setIsEditing(prevState => !prevState);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   return (
     <div className='profile'>
       <Header>
@@ -33,20 +52,27 @@ const ProfilePage = () => {
       <main className='main'>
         <section className='profile__info-section'>
           <h1 className='profile__title'>Привет, {user?.name}!</h1>
-          <ProfileInfo isEditing={isEditing} />
+          <ProfileInfo
+            isEditing={isEditing}
+            values={values}
+            handleChange={handleChange}
+            onSubmit={handleFormSubmit}
+          />
         </section>
 
         <section className='profile__buttons'>
           {
             isEditing ?
               <>
-                <p className='profile__error'></p>
+                <p className='profile__error'>
+                  {errors['name'] || errors['email']}
+                </p>
                 <SubmitButton
                   type='submit'
-                  form='#profile-form'
+                  form='profile-form'
                   className='button profile__edit-button'
-                  onClick={handleEditButtonClick}
                   text='Сохранить'
+                  disabled={!isValid}
                 />
               </>
               :

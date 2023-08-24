@@ -13,8 +13,12 @@ class MainApi {
 
   updateUser(email, name) {
     return this._request('users/me', {
-      method: 'POST',
-      headers: this._headers
+      method: 'PATCH',
+      headers: this._headers,
+      body: JSON.stringify({
+        email,
+        name
+      })
     });
   }
 
@@ -23,9 +27,9 @@ class MainApi {
       method: 'POST',
       headers: this._headers,
       body: JSON.stringify({
-        email: email,
-        password: password,
-        name: name
+        email,
+        password,
+        name
       })
     });
   }
@@ -59,7 +63,9 @@ class MainApi {
     return this._request('movies', {
       method: 'POST',
       headers: this._headers,
-      body: movie
+      body: JSON.stringify({
+        movie
+      })
     });
   }
 

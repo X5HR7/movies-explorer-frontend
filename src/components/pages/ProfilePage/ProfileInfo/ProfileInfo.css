@@ -42,11 +42,13 @@
   position: relative;
   background-color: transparent;
   border: none;
+  transition: color .3s;
 }
 
 .profile__info-input:focus {
   outline: none;
-  text-decoration: underline;
+  color: #4285F4;
+  transition: color .3s;
 }
 
 @media screen and (max-width: 470px) {

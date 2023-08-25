@@ -7,7 +7,7 @@ const ProfileInfo = ({ isEditing, values, handleChange, onSubmit }) => {
   const { user } = useContext(CurrentUserContext);
 
   return (
-    <form className='profile__info' id='profile-form' onSubmit={onSubmit}>
+    <form className='profile__info' id='profile-form' onSubmit={onSubmit} noValidate={true}>
       <div className='profile__info-item'>
         <label htmlFor='name' className='profile__info-input-title'>Имя</label>
         <input

@@ -11,12 +11,18 @@ import MainApi from '../../../utils/MainApi';
 import useUser from '../../../hooks/useUser';
 import useAuth from '../../../hooks/useAuth';
 import usePopup from '../../../hooks/usePopup';
+import useErrorPopup from '../../../hooks/useErrorPopup';
+import useSuccessPopup from '../../../hooks/useSuccessPopup';
+import getErrorMessage from '../../../utils/getErrorMessage';
 
 const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const { user, setUser } = useUser();
   const { setIsAuth } = useAuth();
   const Popup = usePopup();
+
+  const showError = useErrorPopup();
+  const showSuccess = useSuccessPopup();
 
   const { values, isValid, errors, handleChange, resetForm } = useFormWithValidation();
 
@@ -31,16 +37,16 @@ const ProfilePage = () => {
 
   const handleFormSubmit = event => {
     event.preventDefault();
-    console.log('submitted');
 
     MainApi.updateUser(values['email'], values['name'])
       .then(user => {
         resetForm();
         setUser({ name: user.name, email: user.email });
         setIsEditing(prevState => !prevState);
+        showSuccess('Данные успешно обновлены!');
       })
-      .catch(err => {
-        console.log(err);
+      .catch(status => {
+        showError(getErrorMessage(status));
       });
   };
 

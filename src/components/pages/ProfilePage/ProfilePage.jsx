@@ -65,7 +65,8 @@ const ProfilePage = () => {
             isEditing ?
               <>
                 <p className='profile__error'>
-                  {errors['name'] || errors['email']}
+                  {errors['name'] ? `Имя: ${errors['name']}` : ''}
+                  {errors['email'] ? `\nEmail: ${errors['email']}` : ''}
                 </p>
                 <SubmitButton
                   type='submit'

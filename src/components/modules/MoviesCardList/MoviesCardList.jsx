@@ -4,7 +4,7 @@ import MovieCard from '../../ui/MovieCard/MovieCard';
 import { getMovieDuration } from '../../../utils/movies';
 
 
-const MoviesCardList = ({ movies, isOnSavedPage }) => {
+const MoviesCardList = ({ movies, isOnSavedPage, handleClick }) => {
   return (
     <section className='cards'>
       <ul className='cards__container'>
@@ -22,7 +22,13 @@ const MoviesCardList = ({ movies, isOnSavedPage }) => {
           );
         })}
       </ul>
-      <button type='button' className='button cards__show-more-btn'>Ещё</button>
+      <button
+        type='button'
+        className='button cards__show-more-btn'
+        onClick={handleClick}
+      >
+        Ещё
+      </button>
     </section>
   );
 };

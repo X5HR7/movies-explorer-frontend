@@ -1,6 +1,6 @@
 import usePopup from './usePopup';
 
-const useErrorPopup = () => {
+const useSuccessPopup = () => {
   const { setIsPopupOpen, setIsPopupFailed, setPopupMessage } = usePopup();
 
   return (message) => {
@@ -10,4 +10,4 @@ const useErrorPopup = () => {
   };
 };
 
-export default useErrorPopup;
+export default useSuccessPopup;

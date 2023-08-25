@@ -18,12 +18,10 @@ const LoginForm = () => {
 
   const { values, isValid, errors, handleChange, resetForm } = useFormWithValidation();
 
-
   const handleFormSubmit = event => {
     event.preventDefault();
     MainApi.login(values['input-email'], values['input-password'])
       .then(token => {
-        console.log(token);
         if (token) {
           setIsAuth(true);
           resetForm();

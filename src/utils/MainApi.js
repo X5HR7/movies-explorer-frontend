@@ -79,7 +79,7 @@ class MainApi {
 
   _getResponseData(res) {
     if (!res.ok) {
-      return Promise.reject(res.text());
+      return Promise.reject(res.status);
     }
     return res.json();
   }

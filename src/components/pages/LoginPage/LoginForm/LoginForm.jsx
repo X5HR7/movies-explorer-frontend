@@ -2,37 +2,25 @@ import React from 'react';
 import InputGroup from '../../../ui/form/InputGroup/InputGroup';
 import SubmitButton from '../../../ui/form/SubmitButton/SubmitButton';
 import Form from '../../../modules/Form/Form';
-import { login } from '../../../../services/auth.service';
 import { useNavigate } from 'react-router-dom';
-import usePopup from '../../../../hooks/usePopup';
 import useAuth from '../../../../hooks/useAuth';
 import useFormWithValidation from '../../../../hooks/useFormWithValidation';
 import inputValidators from '../../../../utils/inputValidators';
 import MainApi from '../../../../utils/MainApi';
+import useErrorPopup from '../../../../hooks/useErrorPopup';
+import getErrorMessage from '../../../../utils/getErrorMessage';
 
 const LoginForm = () => {
-  const popup = usePopup();
   const { setIsAuth } = useAuth();
+  const showError = useErrorPopup();
 
   const navigate = useNavigate();
 
   const { values, isValid, errors, handleChange, resetForm } = useFormWithValidation();
 
-  // const handleFormSubmit = event => {
-  //   event.preventDefault();
-  //   login(values['input-email'], values['input-password'], popup, setIsAuth)
-  //     .then(() => {
-  //       console.log(1);
-  //       resetForm();
-  //       navigate('/movies', { replace: true });
-  //     })
-  //     .catch(err => console.log(err));
-  // };
 
   const handleFormSubmit = event => {
     event.preventDefault();
-    console.log('submited');
-    console.log(typeof values['input-email'], typeof values['input-password']);
     MainApi.login(values['input-email'], values['input-password'])
       .then(token => {
         console.log(token);
@@ -42,8 +30,8 @@ const LoginForm = () => {
           navigate('/movies', { replace: true });
         }
       })
-      .catch(err => {
-        err.then(error => console.log(error))
+      .catch(status => {
+        showError(getErrorMessage(status));
       });
   };
 

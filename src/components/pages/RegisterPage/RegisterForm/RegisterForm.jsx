@@ -6,9 +6,12 @@ import useFormWithValidation from '../../../../hooks/useFormWithValidation';
 import inputValidators from '../../../../utils/inputValidators';
 import MainApi from '../../../../utils/MainApi';
 import { useNavigate } from 'react-router-dom';
+import useErrorPopup from '../../../../hooks/useErrorPopup';
+import getErrorMessage from '../../../../utils/getErrorMessage';
 
 const RegisterForm = () => {
   const { values, isValid, errors, handleChange, resetForm } = useFormWithValidation();
+  const showError = useErrorPopup();
 
   const navigate = useNavigate();
 
@@ -26,8 +29,8 @@ const RegisterForm = () => {
           navigate('/signin', { replace: true });
         }
       })
-      .catch(err => {
-        console.log(err);
+      .catch(status => {
+        showError(getErrorMessage(status));
       });
   };
 

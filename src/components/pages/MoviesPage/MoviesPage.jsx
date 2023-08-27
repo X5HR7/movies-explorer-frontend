@@ -6,41 +6,73 @@ import MoviesCardList from '../../modules/MoviesCardList/MoviesCardList';
 import Footer from '../../modules/Footer/Footer';
 import Navigation from '../../modules/Navigation/Navigation';
 import MoviesApi from '../../../utils/MoviesApi';
-// import { useFetch } from '../../../hooks/useFetch';
 import Preloader from '../../ui/Preloader/Preloader';
 import { getMovieData } from '../../../utils/movies';
-// import MainApi from '../../../utils/MainApi';
-import useErrorPopup from '../../../hooks/useErrorPopup';
-import getErrorMessage from '../../../utils/getErrorMessage';
 import useCardCount from '../../../hooks/useCardCount';
-
+import getMoviesByKeyWord from '../../../utils/getMoviesByKeyWord';
+import MainApi from '../../../utils/MainApi';
+import errorMessages from '../../../utils/moviesErrorMessages';
 
 const MoviesPage = () => {
-  // const { isLoading, data: movies, error } = useFetch(
-  //   useCallback(() => MoviesApi.getMovies(), [])
-  // );
+  const [searchValue, setSearchValue] = useState(localStorage.getItem('searchValue') || '');
+  const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(Boolean(localStorage.getItem('checkboxState')));
+
+  const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [movies, setMovies] = useState([]);
+  const [isError, setIsError] = useState(false);
 
-  const {visibleCardCount, calculateCardCount} = useCardCount();
-
-  const showError = useErrorPopup();
+  const [movieList, setMovieList] = useState(null);
+  const [movies, setMovies] = useState(JSON.parse(localStorage.getItem('movies')) || []);
+  const [savedMovies, setSavedMovies] = useState(null);
 
   useEffect(() => {
     setIsLoading(true);
-    MoviesApi.getMovies()
-      .then(data => {
-        setMovies(
-          data.map(movie => getMovieData(movie))
-        );
+
+    Promise.all([MainApi.getMovies(), MoviesApi.getMovies()])
+      .then(([savedMovies, movies]) => {
+        setSavedMovies(savedMovies);
+        setMovieList(movies.map(movie => getMovieData(movie)));
       })
-      .catch(status => {
-        showError(getErrorMessage(status));
+      .catch(() => {
+        setMessage(errorMessages.serverError);
+        setIsError(true);
       })
       .finally(() => {
         setIsLoading(false);
       });
   }, []);
+
+  const { visibleCardCount, calculateCardCount } = useCardCount();
+
+  useEffect(() => {
+    if (movieList) handleFormSubmit();
+  }, [isCheckBoxChecked]);
+
+  const handleFormSubmit = event => {
+    event?.preventDefault();
+
+    if (!searchValue) {
+      setMessage(errorMessages.validationError);
+      setIsError(true);
+      return;
+    }
+
+    localStorage.setItem('searchValue', searchValue);
+    localStorage.setItem('checkboxState', isCheckBoxChecked ? 'checked' : '');
+
+    setIsLoading(true);
+    try {
+      const list = getMoviesByKeyWord(movieList, searchValue, isCheckBoxChecked);
+      localStorage.setItem('movies', JSON.stringify(list));
+      setMovies(list);
+    } catch (err) {
+      console.log(err);
+      setMessage(errorMessages.serverError);
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className='movies-page'>
@@ -48,16 +80,24 @@ const MoviesPage = () => {
         <Navigation isLoggedIn={true} />
       </Header>
       <main className='main'>
-        <SearchForm />
-        {isLoading ?
+        <SearchForm
+          input={{ searchValue, setSearchValue }}
+          checkbox={{ isCheckBoxChecked, setIsCheckBoxChecked }}
+          handleSubmit={handleFormSubmit}
+        />
+        {isLoading ? (
           <Preloader />
-          :
+        ) : movies.length && !isError ? (
           <MoviesCardList
             movies={movies.slice(0, visibleCardCount)}
+            savedMovies={savedMovies}
             isOnSavedPage={false}
             handleClick={calculateCardCount}
+            isButtonVisible={movies.length > visibleCardCount}
           />
-        }
+        ) : (
+          <h1 className='movies-page__message'>{message}</h1>
+        )}
       </main>
       <Footer />
     </div>

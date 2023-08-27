@@ -1,35 +1,51 @@
-const getMovieDuration = (movie) => {
-  const durationValue = movie.duration.toString();
-  const lastChar = Number(durationValue.at(-1));
+const getMovieDuration = movie => {
+  if (!movie) return 0;
 
-  let word = 'минут';
+  let res = '';
+  const duration = movie.duration;
 
-  if (lastChar === 1)
-    word += 'а';
-  else if (lastChar > 1 && lastChar < 5)
-    word += 'ы';
+  const hours = Math.floor(duration / 60);
 
-  return `${durationValue} ${word}`;
+  if (hours) {
+    let end = '';
+
+    if (hours % 10 > 1 && hours % 10 < 5) end += 'а';
+    else if (hours % 10 > 4 || hours % 10 === 0) end += 'ов';
+
+    res += `${hours} час${end} `;
+  }
+
+  const minutes = duration - hours * 60;
+
+  if (minutes) {
+    let end = '';
+
+    if (minutes % 10 === 1) end += 'а';
+    else if (minutes % 10 > 1 && minutes % 10 < 5) end += 'ы';
+
+    res += `${minutes} минут${end}`;
+  }
+
+  return res;
 };
 
-const getMovieSmallImage = (movie) => {
+const getMovieSmallImage = movie => {
   const url = movie.image.formats.small?.url;
   return `https://api.nomoreparties.co${url}`;
 };
 
-const getMovieThumbnail = (movie) => {
+const getMovieThumbnail = movie => {
   const url = movie.image.formats.thumbnail?.url;
   return `https://api.nomoreparties.co${url}`;
 };
 
-const getMovieImage = (movie) => {
-  if (movie.image.formats.small)
-    return getMovieSmallImage(movie);
-  else
-    return getMovieThumbnail(movie);
+const getMovieImage = movie => {
+  //в movie.image.formats не всегда есть поле small
+  if (movie.image.formats.small) return getMovieSmallImage(movie);
+  else return getMovieThumbnail(movie);
 };
 
-const getMovieData = (movie) => {
+const getMovieData = movie => {
   return {
     country: movie.country,
     director: movie.director,
@@ -40,7 +56,8 @@ const getMovieData = (movie) => {
     thumbnail: getMovieThumbnail(movie),
     movieId: movie.id,
     nameRU: movie.nameRU,
-    nameEN: movie.nameEN
+    nameEN: movie.nameEN,
+    trailerLink: movie.trailerLink
   };
 };
 

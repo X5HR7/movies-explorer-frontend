@@ -1,18 +1,76 @@
-import React, { useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import './SavedMoviesPage.css';
 import Header from '../../modules/Header/Header';
 import SearchForm from '../../modules/SearchForm/SearchForm';
 import MoviesCardList from '../../modules/MoviesCardList/MoviesCardList';
 import Footer from '../../modules/Footer/Footer';
 import Navigation from '../../modules/Navigation/Navigation';
-import { useFetch } from '../../../hooks/useFetch';
 import MainApi from '../../../utils/MainApi';
 import Preloader from '../../ui/Preloader/Preloader';
+import getMoviesByKeyWord from '../../../utils/getMoviesByKeyWord';
+import errorMessages from '../../../utils/moviesErrorMessages';
+import useCardCount from '../../../hooks/useCardCount';
 
 const SavedMoviesPage = () => {
-  const { isLoading, data: movies, error } = useFetch(
-    useCallback(() => MainApi.getMovies(), [])
-  );
+  const [searchValue, setSearchValue] = useState('');
+  const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(true);
+
+  const [movieList, setMovieList] = useState(null);
+  const [movies, setMovies] = useState(null);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [message, setMessage] = useState('');
+
+  const { visibleCardCount, calculateCardCount } = useCardCount();
+
+  useEffect(() => {
+    setIsLoading(true);
+    MainApi.getMovies()
+      .then(data => {
+        setMovieList(data);
+        setMovies(data);
+      })
+      .catch(() => {
+        setMessage(errorMessages.serverError);
+        setIsError(true);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (isError) {
+      setIsError(false);
+    } else if (!movies?.length) setMessage(errorMessages.notFoundError);
+  }, [movies]);
+
+  useEffect(() => {
+    if (movieList)
+      handleFormSubmit()
+  }, [isCheckBoxChecked]);
+
+  const handleFormSubmit = event => {
+    event?.preventDefault();
+
+    if (!searchValue) {
+      setMessage(errorMessages.validationError);
+      setIsError(true);
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const filteredMovies = getMoviesByKeyWord(movieList, searchValue, isCheckBoxChecked);
+      setMovies(filteredMovies);
+    } catch (err) {
+      setMessage(errorMessages.serverError);
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className='saved-movies-page'>
@@ -20,12 +78,25 @@ const SavedMoviesPage = () => {
         <Navigation isLoggedIn={true} />
       </Header>
       <main className='main'>
-        <SearchForm />
-        {isLoading ?
+        <SearchForm
+          input={{ searchValue, setSearchValue }}
+          checkbox={{ isCheckBoxChecked, setIsCheckBoxChecked }}
+          handleSubmit={handleFormSubmit}
+        />
+        {isLoading ? (
           <Preloader />
-          :
-          <MoviesCardList movies={movies} isOnSavedPage={true} />
-        }
+        ) : movies?.length && !isError ? (
+          <MoviesCardList
+            movies={movies.slice(0, visibleCardCount)}
+            savedMovies={movies}
+            isOnSavedPage={true}
+            isButtonVisible={movies.length > visibleCardCount}
+            setSavedMovies={setMovies}
+            handleClick={calculateCardCount}
+          />
+        ) : (
+          <h1 className='movies-page__message'>{message}</h1>
+        )}
       </main>
       <Footer />
     </div>

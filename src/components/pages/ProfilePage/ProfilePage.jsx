@@ -10,7 +10,6 @@ import useFormWithValidation from '../../../hooks/useFormWithValidation';
 import MainApi from '../../../utils/MainApi';
 import useUser from '../../../hooks/useUser';
 import useAuth from '../../../hooks/useAuth';
-import usePopup from '../../../hooks/usePopup';
 import useErrorPopup from '../../../hooks/useErrorPopup';
 import useSuccessPopup from '../../../hooks/useSuccessPopup';
 import getErrorMessage from '../../../utils/getErrorMessage';
@@ -21,7 +20,6 @@ const ProfilePage = () => {
 
   const { user, setUser } = useUser();
   const { setIsAuth } = useAuth();
-  const Popup = usePopup();
 
   const showError = useErrorPopup();
   const showSuccess = useSuccessPopup();
@@ -42,9 +40,13 @@ const ProfilePage = () => {
   };
 
   const handleLogoutButtonClick = () => {
-    ///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    logout(Popup);
-    setIsAuth(false);
+    logout(setIsAuth)
+      .then(() => {
+        showSuccess('Выполнен выход из аккаунта!');
+      })
+      .catch(status => {
+        showError(getErrorMessage(status));
+      });
   };
 
   const handleFormSubmit = event => {

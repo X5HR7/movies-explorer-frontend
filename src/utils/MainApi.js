@@ -93,7 +93,7 @@ class MainApi {
 
 // eslint-disable-next-line
 export default new MainApi({
-  baseUrl: 'api.movies-explr.service.nomoreparties.co',
+  baseUrl: 'https://api.movies-explr.service.nomoreparties.co',
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json'

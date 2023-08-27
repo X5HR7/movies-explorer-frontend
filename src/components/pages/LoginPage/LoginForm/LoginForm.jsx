@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import useAuth from '../../../../hooks/useAuth';
 import useFormWithValidation from '../../../../hooks/useFormWithValidation';
 import inputValidators from '../../../../utils/inputValidators';
-import MainApi from '../../../../utils/MainApi';
 import useErrorPopup from '../../../../hooks/useErrorPopup';
 import getErrorMessage from '../../../../utils/getErrorMessage';
 import { login } from '../../../../services/auth.service';

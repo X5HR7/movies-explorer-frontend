@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import InputGroup from '../../../ui/form/InputGroup/InputGroup';
 import SubmitButton from '../../../ui/form/SubmitButton/SubmitButton';
 import Form from '../../../modules/Form/Form';
@@ -11,6 +11,8 @@ import useErrorPopup from '../../../../hooks/useErrorPopup';
 import getErrorMessage from '../../../../utils/getErrorMessage';
 
 const LoginForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const { setIsAuth } = useAuth();
   const showError = useErrorPopup();
 
@@ -20,6 +22,8 @@ const LoginForm = () => {
 
   const handleFormSubmit = event => {
     event.preventDefault();
+
+    setIsLoading(true);
     MainApi.login(values['input-email'], values['input-password'])
       .then(token => {
         if (token) {
@@ -30,6 +34,9 @@ const LoginForm = () => {
       })
       .catch(status => {
         showError(getErrorMessage(status));
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -58,7 +65,7 @@ const LoginForm = () => {
         titleText='Пароль'
         errorMessage={errors['input-password']}
       />
-      <SubmitButton classes='login__submit-button' text='Войти' disabled={!isValid} />
+      <SubmitButton classes='login__submit-button' text='Войти' disabled={!isValid || isLoading} />
     </Form>
   );
 };

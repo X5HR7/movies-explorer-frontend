@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import InputGroup from '../../../ui/form/InputGroup/InputGroup';
 import SubmitButton from '../../../ui/form/SubmitButton/SubmitButton';
 import Form from '../../../modules/Form/Form';
@@ -10,6 +10,8 @@ import useErrorPopup from '../../../../hooks/useErrorPopup';
 import getErrorMessage from '../../../../utils/getErrorMessage';
 
 const RegisterForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const { values, isValid, errors, handleChange, resetForm } = useFormWithValidation();
   const showError = useErrorPopup();
 
@@ -18,11 +20,8 @@ const RegisterForm = () => {
   const handleFormSubmit = event => {
     event.preventDefault();
 
-    MainApi.register(
-      values['input-email'],
-      values['input-password'],
-      values['input-name']
-    )
+    setIsLoading(true);
+    MainApi.register(values['input-email'], values['input-password'], values['input-name'])
       .then(user => {
         if (user) {
           resetForm();
@@ -31,6 +30,9 @@ const RegisterForm = () => {
       })
       .catch(status => {
         showError(getErrorMessage(status));
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -72,7 +74,7 @@ const RegisterForm = () => {
         }}
         errorMessage={errors['input-password']}
       />
-      <SubmitButton classes='register__submit-button' text='Зарегистрироваться' disabled={!isValid} />
+      <SubmitButton classes='register__submit-button' text='Зарегистрироваться' disabled={!isValid || isLoading} />
     </Form>
   );
 };

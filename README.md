@@ -11,3 +11,6 @@ Cервис Movies: Сервис, в котором можно найти фил
 1) HTML
 2) CSS (flexbox, grid)
 3) JavaScript, React.js, React-router-dom
+
+Адрес API: https://api.movies-explr.service.nomoreparties.co  
+Адрес фронтенда: https://movies-explorer.service.nomoreparties.co

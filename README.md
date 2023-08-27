@@ -14,3 +14,4 @@ Cервис Movies: Сервис, в котором можно найти фил
 
 Адрес API: https://api.movies-explr.service.nomoreparties.co  
 Адрес фронтенда: https://movies-explorer.service.nomoreparties.co
+Ссылка на pull-request: https://github.com/X5HR7/movies-explorer-frontend/pull/2

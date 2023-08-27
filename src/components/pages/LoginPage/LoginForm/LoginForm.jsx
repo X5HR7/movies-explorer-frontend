@@ -9,6 +9,7 @@ import inputValidators from '../../../../utils/inputValidators';
 import MainApi from '../../../../utils/MainApi';
 import useErrorPopup from '../../../../hooks/useErrorPopup';
 import getErrorMessage from '../../../../utils/getErrorMessage';
+import { login } from '../../../../services/auth.service';
 
 const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -23,14 +24,11 @@ const LoginForm = () => {
   const handleFormSubmit = event => {
     event.preventDefault();
 
-    setIsLoading(true);
-    MainApi.login(values['input-email'], values['input-password'])
-      .then(token => {
-        if (token) {
-          setIsAuth(true);
-          resetForm();
-          navigate('/movies', { replace: true });
-        }
+    setIsLoading(true)
+    login(values['input-email'], values['input-password'], setIsAuth)
+      .then(() => {
+        resetForm();
+        navigate('/movies', { replace: true });
       })
       .catch(status => {
         showError(getErrorMessage(status));

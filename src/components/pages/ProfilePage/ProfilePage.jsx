@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './ProfilePage.css';
 import Header from '../../modules/Header/Header';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
@@ -17,6 +17,8 @@ import getErrorMessage from '../../../utils/getErrorMessage';
 
 const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const { user, setUser } = useUser();
   const { setIsAuth } = useAuth();
   const Popup = usePopup();
@@ -24,13 +26,23 @@ const ProfilePage = () => {
   const showError = useErrorPopup();
   const showSuccess = useSuccessPopup();
 
-  const { values, isValid, errors, handleChange, resetForm } = useFormWithValidation();
+  const { values, isValid, setIsValid, errors, handleChange, resetForm } = useFormWithValidation();
+
+  useEffect(() => {
+    const isEmailNew = values['email'] ? !(values['email'] === user?.email) : false;
+    const isNameNew = values['name'] ? !(values['name'] === user?.name) : false;
+    const isBothFieldsNew = isEmailNew || isNameNew;
+
+    if (!isBothFieldsNew) setIsValid(false);
+    else setIsValid(true);
+  }, [values, setIsValid, user?.email, user?.name]);
 
   const handleEditButtonClick = () => {
     setIsEditing(prevState => !prevState);
   };
 
   const handleLogoutButtonClick = () => {
+    ///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     logout(Popup);
     setIsAuth(false);
   };
@@ -38,6 +50,7 @@ const ProfilePage = () => {
   const handleFormSubmit = event => {
     event.preventDefault();
 
+    setIsLoading(true);
     MainApi.updateUser(values['email'], values['name'])
       .then(user => {
         resetForm();
@@ -47,6 +60,9 @@ const ProfilePage = () => {
       })
       .catch(status => {
         showError(getErrorMessage(status));
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -67,39 +83,30 @@ const ProfilePage = () => {
         </section>
 
         <section className='profile__buttons'>
-          {
-            isEditing ?
-              <>
-                <p className='profile__error'>
-                  {errors['name'] ? `Имя: ${errors['name']}` : ''}
-                  {errors['email'] ? `\nEmail: ${errors['email']}` : ''}
-                </p>
-                <SubmitButton
-                  type='submit'
-                  form='profile-form'
-                  className='button profile__edit-button'
-                  text='Сохранить'
-                  disabled={!isValid}
-                />
-              </>
-              :
-              <>
-                <button
-                  type='button'
-                  className='link profile__edit-button'
-                  onClick={handleEditButtonClick}
-                >
-                  Редактировать
-                </button>
-                <Link
-                  to='/'
-                  className='link profile__logout-button'
-                  onClick={handleLogoutButtonClick}
-                >
-                  Выйти из аккаунта
-                </Link>
-              </>
-          }
+          {isEditing ? (
+            <>
+              <p className='profile__error'>
+                {errors['name'] ? `Имя: ${errors['name']}` : ''}
+                {errors['email'] ? `\nEmail: ${errors['email']}` : ''}
+              </p>
+              <SubmitButton
+                type='submit'
+                form='profile-form'
+                className='button profile__edit-button'
+                text={isLoading ? 'Сохранение...' : 'Сохранить'}
+                disabled={!isValid || isLoading}
+              />
+            </>
+          ) : (
+            <>
+              <button type='button' className='link profile__edit-button' onClick={handleEditButtonClick}>
+                Редактировать
+              </button>
+              <Link to='/' className='link profile__logout-button' onClick={handleLogoutButtonClick}>
+                Выйти из аккаунта
+              </Link>
+            </>
+          )}
         </section>
       </main>
     </div>

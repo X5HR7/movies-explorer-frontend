@@ -48,6 +48,12 @@ const MoviesPage = () => {
     if (movieList) handleFormSubmit();
   }, [isCheckBoxChecked]);
 
+  useEffect(() => {
+    if (isError) {
+      setIsError(false);
+    } else if (!movies?.length) setMessage(errorMessages.notFoundError);
+  }, [movies]);
+
   const handleFormSubmit = event => {
     event?.preventDefault();
 

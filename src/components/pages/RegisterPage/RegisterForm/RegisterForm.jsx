@@ -8,12 +8,15 @@ import MainApi from '../../../../utils/MainApi';
 import { useNavigate } from 'react-router-dom';
 import useErrorPopup from '../../../../hooks/useErrorPopup';
 import getErrorMessage from '../../../../utils/getErrorMessage';
+import { login } from '../../../../services/auth.service';
+import useAuth from '../../../../hooks/useAuth';
 
 const RegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { values, isValid, errors, handleChange, resetForm } = useFormWithValidation();
   const showError = useErrorPopup();
+  const { setIsAuth } = useAuth();
 
   const navigate = useNavigate();
 
@@ -24,8 +27,15 @@ const RegisterForm = () => {
     MainApi.register(values['input-email'], values['input-password'], values['input-name'])
       .then(user => {
         if (user) {
-          resetForm();
-          navigate('/signin', { replace: true });
+          login(values['input-email'], values['input-password'], setIsAuth)
+            .then(() => {
+              resetForm();
+              navigate('/movies', { replace: true });
+              console.log('done');
+            })
+            .catch(status => {
+              showError(getErrorMessage(status));
+            });
         }
       })
       .catch(status => {
@@ -74,7 +84,11 @@ const RegisterForm = () => {
         }}
         errorMessage={errors['input-password']}
       />
-      <SubmitButton classes='register__submit-button' text='Зарегистрироваться' disabled={!isValid || isLoading} />
+      <SubmitButton
+        classes='register__submit-button'
+        text='Зарегистрироваться'
+        disabled={!isValid || isLoading}
+      />
     </Form>
   );
 };

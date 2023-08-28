@@ -12,12 +12,19 @@ const MovieCard = ({ movie, isOnSavedPage, savedMovies, setSavedMovies }) => {
 
   useEffect(() => {
     if (isLiked) movie._id = savedMovies?.find(m => m.movieId === movie.movieId)?._id;
+    // else movie._id = null;
   }, [isLiked, movie, savedMovies]);
 
   const likeMovieCard = () => {
+    console.log('like', movie);
+    delete movie._id;
     MainApi.saveMovie(movie)
       .then(data => {
-        if (data) setIsLiked(true);
+        if (data) {
+          setIsLiked(true);
+          setSavedMovies(prev => [...prev, data]);
+          console.log(savedMovies);
+        }
       })
       .catch(status => {
         showError(getErrorMessage(status));
@@ -25,11 +32,13 @@ const MovieCard = ({ movie, isOnSavedPage, savedMovies, setSavedMovies }) => {
   };
 
   const deleteMovieCard = () => {
+    console.log('del', movie);
     MainApi.deleteMovie(movie._id)
       .then(data => {
-        if (isOnSavedPage) {
-          setSavedMovies(savedMovies.filter(m => m.movieId !== movie.movieId));
-        } else if (data) setIsLiked(false);
+        setSavedMovies(savedMovies.filter(m => m.movieId !== movie.movieId));
+        if (!isOnSavedPage && data) {
+          setIsLiked(false);
+        }
       })
       .catch(status => {
         showError(getErrorMessage(status));

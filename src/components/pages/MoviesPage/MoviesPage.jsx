@@ -97,6 +97,7 @@ const MoviesPage = () => {
           <MoviesCardList
             movies={movies.slice(0, visibleCardCount)}
             savedMovies={savedMovies}
+            setSavedMovies={setSavedMovies}
             isOnSavedPage={false}
             handleClick={calculateCardCount}
             isButtonVisible={movies.length > visibleCardCount}

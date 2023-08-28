@@ -13,7 +13,7 @@ import useCardCount from '../../../hooks/useCardCount';
 
 const SavedMoviesPage = () => {
   const [searchValue, setSearchValue] = useState('');
-  const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(true);
+  const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(false);
 
   const [movieList, setMovieList] = useState(null);
   const [movies, setMovies] = useState(null);
@@ -53,12 +53,6 @@ const SavedMoviesPage = () => {
 
   const handleFormSubmit = event => {
     event?.preventDefault();
-
-    if (!searchValue) {
-      setMessage(errorMessages.validationError);
-      setIsError(true);
-      return;
-    }
 
     setIsLoading(true);
     try {

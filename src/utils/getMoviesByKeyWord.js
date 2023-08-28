@@ -9,8 +9,8 @@ const getMoviesByKeyWord = (movies, key, includeShorts) => {
       res.push(movie);
   });
 
-  if (!includeShorts)
-    return res.filter(movie => movie.duration >= 40);
+  if (includeShorts)
+    return res.filter(movie => movie.duration <= 40);
 
   return res;
 };

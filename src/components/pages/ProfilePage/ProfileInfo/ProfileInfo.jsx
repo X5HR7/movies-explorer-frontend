@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './ProfileInfo.css';
+import CurrentUserContext from '../../../../context/CurrentUserContext';
+import inputValidators from '../../../../utils/inputValidators';
 
-const ProfileInfo = ({ user, isEditing }) => {
+const ProfileInfo = ({ isEditing, values, handleChange, onSubmit }) => {
+  const { user } = useContext(CurrentUserContext);
+
   return (
-    <form className='profile__info' id='profile-form'>
+    <form className='profile__info' id='profile-form' onSubmit={onSubmit} noValidate={true}>
       <div className='profile__info-item'>
         <label htmlFor='name' className='profile__info-input-title'>Имя</label>
         <input
@@ -11,12 +15,13 @@ const ProfileInfo = ({ user, isEditing }) => {
           id='name'
           type='text'
           disabled={!isEditing}
-          // value={user.name}
-          defaultValue={user.name}
+          value={values['name'] !== undefined ? values['name'] : user?.name}
           required={true}
           placeholder='Введите имя'
           minLength={2}
           maxLength={30}
+          pattern={inputValidators.name}
+          onChange={handleChange}
         />
       </div>
       <div className='profile__info-item'>
@@ -26,10 +31,11 @@ const ProfileInfo = ({ user, isEditing }) => {
           id='email'
           type='email'
           disabled={!isEditing}
-          // value={user.email}
-          defaultValue={user.email}
+          value={values['email'] !== undefined ? values['email'] : user?.email}
           required={true}
           placeholder='Введите почту'
+          pattern={inputValidators.email}
+          onChange={handleChange}
         />
       </div>
     </form>

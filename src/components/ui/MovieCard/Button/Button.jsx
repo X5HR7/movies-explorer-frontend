@@ -3,14 +3,14 @@ import './Button.css';
 import SaveButton from './SaveButton/SaveButton';
 import DeleteButton from './DeleteButton/DeleteButton';
 
-const Button = ({ isLiked, isOnSavedPage }) => {
+const Button = ({ isLiked, isOnSavedPage, likeMovie, deleteMovie }) => {
   return (
     <>
       {
         isOnSavedPage ?
-          <DeleteButton />
+          <DeleteButton deleteMovie={deleteMovie}/>
           :
-          <SaveButton isLiked={isLiked} />
+          <SaveButton isLiked={isLiked} likeMovie={likeMovie} deleteMovie={deleteMovie}/>
       }
     </>
   );

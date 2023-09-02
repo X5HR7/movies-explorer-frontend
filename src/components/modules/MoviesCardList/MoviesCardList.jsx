@@ -1,28 +1,36 @@
 import React from 'react';
 import './MoviesCardList.css';
-import initialCards from '../../../utils/initialCards';
 import MovieCard from '../../ui/MovieCard/MovieCard';
 
-const MoviesCardList = ({ isOnSavedPage }) => {
+const MoviesCardList = ({
+  movies,
+  savedMovies,
+  isOnSavedPage,
+  handleClick,
+  isButtonVisible,
+  setSavedMovies
+}) => {
   return (
     <section className='cards'>
       <ul className='cards__container'>
-        {initialCards.map((card, index) => {
+        {movies.map((movie) => {
           return (
-            <li className='cards__container-item'>
+            <li className='cards__container-item' key={movie.movieId}>
               <MovieCard
-                key={index}
-                name={card.name}
-                duration={card.duration}
-                image={card.image}
-                isLiked={card.isLiked}
+                movie={movie}
                 isOnSavedPage={isOnSavedPage}
+                savedMovies={savedMovies}
+                setSavedMovies={setSavedMovies}
               />
             </li>
           );
         })}
       </ul>
-      <button type='button' className='button cards__show-more-btn'>Ещё</button>
+      {isButtonVisible ? (
+        <button type='button' className='button cards__show-more-btn' onClick={handleClick}>
+          Ещё
+        </button>
+      ) : null}
     </section>
   );
 };

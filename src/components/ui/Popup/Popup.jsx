@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import './Popup.css';
 import doneIcon from '../../../assets/images/icon_done.svg';
 import failIcon from '../../../assets/images/icon_failed.svg';
+import PopupContext from '../../../context/PopupContext';
 
-const Popup = ({ isOpen, setIsOpen, isFailed = false, successText = 'Операция выполнена успешно' }) => {
-  const handleCloseOnEscape = event => {
+const Popup = () => {
+  const { isPopupOpen, setIsPopupOpen, isPopupFailed, popupMessage } = useContext(PopupContext);
+
+  const handleCloseOnEscape = useCallback(event => {
     if (event?.key?.toLowerCase() === 'escape') {
-      setIsOpen(false);
+      setIsPopupOpen(false);
     }
-  };
+  }, [setIsPopupOpen]);
 
-  React.useEffect(() => {
-    if (isOpen)
+  useEffect(() => {
+    if (isPopupOpen)
       document.addEventListener('keydown', handleCloseOnEscape);
     else
       document.removeEventListener('keydown', handleCloseOnEscape);
@@ -19,10 +22,10 @@ const Popup = ({ isOpen, setIsOpen, isFailed = false, successText = 'Опера�
     return () => {
       document.removeEventListener('keydown', handleCloseOnEscape);
     };
-  }, [isOpen]);
+  }, [isPopupOpen, handleCloseOnEscape]);
 
   const closePopup = () => {
-    setIsOpen(false);
+    setIsPopupOpen(false);
   };
 
   const handlePopupClick = event => {
@@ -31,16 +34,17 @@ const Popup = ({ isOpen, setIsOpen, isFailed = false, successText = 'Опера�
 
 
   return (
-    <div className={`popup ${isOpen ? 'popup_opened' : ''}`} onClick={closePopup}>
+    <div className={`popup ${isPopupOpen ? 'popup_opened' : ''}`} onClick={closePopup}>
       <div className='popup__container' onClick={handlePopupClick}>
         <button type='button' onClick={closePopup} className='button popup__button-close'></button>
         <img
-          src={isFailed ? failIcon : doneIcon}
-          alt={isFailed ? 'Произошла ошибка' : 'Операция выполнена успешно'}
+          src={isPopupFailed ? failIcon : doneIcon}
+          alt={isPopupFailed ? 'Произошла ошибка' : 'Операция выполнена успешно'}
           className='popup__image'
         />
         <p className='popup__text-message'>
-          {isFailed ? 'Что-то пошло не так! Попробуйте ещё раз.' : successText}
+          {popupMessage ? popupMessage : isPopupFailed ? 'Что-то пошло не так! Попробуйте ещё раз.' : 'Операция выполнена успешно'}
+          {/*{popupMessage}*/}
         </p>
       </div>
     </div>

@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './Navigation.css';
 import { Link, NavLink } from 'react-router-dom';
 import accountIcon from '../../../assets/images/account-icon.svg';
+import AuthContext from '../../../context/AuthContext';
 
-const Navigation = ({ isLoggedIn }) => {
+const Navigation = () => {
+  const { isAuth } = useContext(AuthContext);
   return (
     <nav className='navigation'>
-
-
       {
-        isLoggedIn ? (
+        isAuth ? (
           <>
             <input type='checkbox' className='navigation__checkbox' />
             <div className='navigation__hamburger'></div>

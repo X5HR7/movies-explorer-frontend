@@ -1,15 +1,13 @@
 import React from 'react';
 import './Input.css';
 
-const Input = ({ classes, type, id, placeholder, validators,  required = true }) => {
+// const Input = ({ classes, type, id, placeholder, validators,  required = true }) => {
+const Input = (props) => {
   return (
     <input
-      type={type}
-      id={id}
-      placeholder={`Введите ${placeholder.toLowerCase()}`}
-      className={`form__input ${classes} ${type === 'email' ? 'form__input_type_email' : ''}`}
-      required={required}
-      {...validators}
+      className={`form__input ${props.type === 'email' ? 'form__input_type_email' : ''}`}
+      required={true}
+      {...{ ...props, value: props.value ? props.value : ''}}
     />
   );
 };
